@@ -55,8 +55,7 @@ Desktop.ini
 *.swo
 *~
 
-# ML artifacts (regenerate from customer_churn_prediction.ipynb)
-churn_model_artifacts.joblib
+# ML artifacts (large training outputs — keep joblib for Streamlit deploy)
 *.pkl
 *.pickle
 *.h5
