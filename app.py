@@ -4,6 +4,22 @@ import joblib
 import pandas as pd
 import streamlit as st
 
+
+def _ensure_sklearn_pickle_compat():
+    """Allow loading models saved with scikit-learn 1.6.x on newer versions."""
+    try:
+        import sklearn.compose._column_transformer as column_transformer
+    except ImportError:
+        return
+
+    if hasattr(column_transformer, "_RemainderColsList"):
+        return
+
+    class _RemainderColsList(list):
+        pass
+
+    column_transformer._RemainderColsList = _RemainderColsList
+
 BASE_DIR = Path(__file__).parent
 ARTIFACTS_PATH = BASE_DIR / "churn_model_artifacts.joblib"
 
@@ -62,6 +78,13 @@ DEFAULT_INPUTS = {
 
 @st.cache_resource
 def load_artifacts():
+    if not ARTIFACTS_PATH.exists():
+        raise FileNotFoundError(
+            f"Model file not found at {ARTIFACTS_PATH}. "
+            "Run export_model.py or the training notebook to generate churn_model_artifacts.joblib."
+        )
+
+    _ensure_sklearn_pickle_compat()
     artifacts = joblib.load(ARTIFACTS_PATH)
     return artifacts["model"], artifacts["optimal_threshold"]
 
