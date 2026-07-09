@@ -2,7 +2,7 @@
 
 A machine learning project that predicts whether a telecom customer is likely to cancel their service, and turns that prediction into something a business team can actually use through an interactive dashboard.
 
-**Live demo:** 
+**Live demo:** https://churnscope-customerintelligence.streamlit.app/
 
 ---
 
